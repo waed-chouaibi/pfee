@@ -33,18 +33,18 @@ export class UtilisateurService {
 
   async update(id: number, updateUtilisateurDto: UpdateUtilisateurDto):Promise<Utilisateur> {
     const updateuser=await this.userRepository.preload({...updateUtilisateurDto,id})
-  if(!updateuser){
-    throw new NotFoundException(`can not update a #${id} user`)
-  }
-  return this.userRepository.save(updateuser)
+    if(!updateuser){
+      throw new NotFoundException(`can not update a #${id} user`)
+    }
+    return this.userRepository.save(updateuser)
   }
 
   async remove(id: number){
-     const user=await this.userRepository.findOneBy({id})
-  if(!user){
-    throw new NotFoundException("user not found")
-  }
-  await this.userRepository.delete(id)
-  return id
+    const user=await this.userRepository.findOneBy({id})
+    if(!user){
+      throw new NotFoundException("user not found")
+    }
+    await this.userRepository.delete(id)
+    return id
   }
 }

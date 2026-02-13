@@ -9,7 +9,6 @@ export class CreateUtilisateurDto {
     @IsNotEmpty()
     prenom:string
 
-
     @IsEmail()
     @IsNotEmpty()
     email:string
