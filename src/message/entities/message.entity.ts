@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Conversation } from "src/conversation/entities/conversation.entity";
+import { Column, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("Message")
 export class Message {
@@ -12,4 +13,10 @@ export class Message {
     // emetteur:Utilisateur
     @Column()
     lu:boolean
+
+    @ManyToMany(()=>Conversation,conversation=>conversation.message,{
+        onDelete:'CASCADE'
+    })
+    @JoinColumn()
+    conversation:Conversation
 }

@@ -8,15 +8,15 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class CondidatureService {
   constructor(
-    @InjectRepository(Condidature) private userRepository:Repository<Condidature> 
+    @InjectRepository(Condidature) private candidatureRepository:Repository<Condidature> 
   ){}
   async create(createCondidatureDto: CreateCondidatureDto):Promise <Condidature> {
-    const newCondidature =await this.userRepository.create(createCondidatureDto)
-    return this.userRepository.save(newCondidature)
+    const newCondidature =await this.candidatureRepository.create(createCondidatureDto)
+    return this.candidatureRepository.save(newCondidature)
   }
 
   async findAll():Promise <Condidature[]> {
-    const condidature=await this.userRepository.find()
+    const condidature=await this.candidatureRepository.find()
         if(condidature.length==0){
           throw new NotFoundException("data not found")
         }
@@ -24,7 +24,7 @@ export class CondidatureService {
   }
 
   async findOne(id: number):Promise<Condidature> {
-    const condidature=await this.userRepository.findOneBy({id})
+    const condidature=await this.candidatureRepository.findOneBy({id})
   if(!condidature){
     throw new NotFoundException("user not found")
   }
@@ -32,19 +32,19 @@ export class CondidatureService {
   }
 
   async update(id: number, updateCondidatureDto: UpdateCondidatureDto):Promise <Condidature> {
-     const updateCondidature=await this.userRepository.preload({...updateCondidatureDto,id})
+     const updateCondidature=await this.candidatureRepository.preload({...updateCondidatureDto,id})
   if(!updateCondidature){
     throw new NotFoundException(`can not update a #${id} user`)
   }
-  return this.userRepository.save(updateCondidature)
+  return this.candidatureRepository.save(updateCondidature)
   }
 
   async remove(id: number) {
-     const condidature=await this.userRepository.findOneBy({id})
+     const condidature=await this.candidatureRepository.findOneBy({id})
      if(!condidature){
       throw new NotFoundException("user not found")
     }
-    await this.userRepository.delete(id)
+    await this.candidatureRepository.delete(id)
     return id
   }
 }

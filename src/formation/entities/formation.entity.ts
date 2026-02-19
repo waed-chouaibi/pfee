@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Candidat } from "src/candidat/entities/candidat.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("Formation")
 export class Formation {
@@ -14,4 +15,10 @@ export class Formation {
     dateFin:Date
     @Column()
     mention:string
+
+    @ManyToOne(()=>Candidat,candidat=>candidat.formartion,{
+        onDelete:'CASCADE'
+    })
+    @JoinColumn()
+    candidat:Candidat;
 }

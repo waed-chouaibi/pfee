@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Candidat } from "src/candidat/entities/candidat.entity";
+import { Entreprise } from "src/entreprise/entities/entreprise.entity";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum NotificationType {
   NOUVELLE_OFFRE = "NOUVELLE_OFFRE",
@@ -30,4 +32,12 @@ export class Notification {
 
   @Column({ default: false })
   lu: boolean;
+
+  @ManyToOne(()=>Entreprise,entreprise=>entreprise.notifications)
+  @JoinColumn({name:'entreprise_id'})
+  entreprise:Entreprise;
+
+  @ManyToOne(()=>Candidat,candidat=>candidat.notifications)
+  @JoinColumn({name:'candidat_id'})
+  candidat:Candidat;
 }

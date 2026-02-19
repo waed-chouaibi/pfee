@@ -8,15 +8,15 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class AdministrateurService {
   constructor(
-    @InjectRepository(Administrateur) private userRepository:Repository<Administrateur>
+    @InjectRepository(Administrateur) private administrateurRepository:Repository<Administrateur>
   ){}
   async create(createAdministrateurDto: CreateAdministrateurDto):Promise <Administrateur> {
-    const newadmin =await this.userRepository.create({...createAdministrateurDto, role:"administrateur"})
-    return this.userRepository.save(newadmin)
+    const newadmin =await this.administrateurRepository.create({...createAdministrateurDto, role:"administrateur"})
+    return this.administrateurRepository.save(newadmin)
   }
 
   async findAll():Promise <Administrateur[]> {
-    const admin=await this.userRepository.find()
+    const admin=await this.administrateurRepository.find()
         if(admin.length==0){
           throw new NotFoundException("data not found")
         }
@@ -24,7 +24,7 @@ export class AdministrateurService {
   }
 
   async findOne(id: number):Promise <Administrateur> {
-    const admin=await this.userRepository.findOneBy({id})
+    const admin=await this.administrateurRepository.findOneBy({id})
   if(!admin){
     throw new NotFoundException("error not found")
   }
@@ -32,19 +32,19 @@ export class AdministrateurService {
   }
 
   async update(id: number, updateAdministrateurDto: UpdateAdministrateurDto):Promise <Administrateur> {
-    const updateAdmin=await this.userRepository.preload({...updateAdministrateurDto,id})
+    const updateAdmin=await this.administrateurRepository.preload({...updateAdministrateurDto,id})
   if(!updateAdmin){
     throw new NotFoundException(`can not update a #${id} `)
   }
-  return this.userRepository.save(updateAdmin)
+  return this.administrateurRepository.save(updateAdmin)
   }
 
   async remove(id: number) {
-    const admin=await this.userRepository.findOneBy({id})
+    const admin=await this.administrateurRepository.findOneBy({id})
   if(!admin){
     throw new NotFoundException("error not found")
   }
-  await this.userRepository.delete(id)
+  await this.administrateurRepository.delete(id)
   return id
   }
 }

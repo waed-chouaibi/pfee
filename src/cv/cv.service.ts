@@ -8,15 +8,15 @@ import { Cv } from './entities/cv.entity';
 @Injectable()
 export class CvService {
   constructor(
-    @InjectRepository(Cv) private userRepository:Repository <Cv>
+    @InjectRepository(Cv) private cvRepository:Repository <Cv>
   ){}
   async create(createCvDto: CreateCvDto):Promise <Cv> {
-    const newCv =await this.userRepository.create(createCvDto)
-    return this.userRepository.save(newCv)
+    const newCv =await this.cvRepository.create(createCvDto)
+    return this.cvRepository.save(newCv)
   }
 
   async findAll():Promise<Cv[]> {
-    const cv=await this.userRepository.find()
+    const cv=await this.cvRepository.find()
         if(cv.length==0){
           throw new NotFoundException("data not found")
         }
@@ -24,7 +24,7 @@ export class CvService {
   }
 
   async findOne(id: number):Promise <Cv> {
-    const cv=await this.userRepository.findOneBy({id})
+    const cv=await this.cvRepository.findOneBy({id})
     if(!cv){
       throw new NotFoundException("user not found")
     }
@@ -32,19 +32,19 @@ export class CvService {
   }
 
   async update(id: number, updateCvDto: UpdateCvDto):Promise<Cv> {
-    const updateCv=await this.userRepository.preload({...updateCvDto,id})
+    const updateCv=await this.cvRepository.preload({...updateCvDto,id})
     if(!updateCv){
       throw new NotFoundException(`can not update a #${id} user`)
     }
-    return this.userRepository.save(updateCv)
+    return this.cvRepository.save(updateCv)
   }
 
   async remove(id: number) {
-    const cv=await this.userRepository.findOneBy({id})
+    const cv=await this.cvRepository.findOneBy({id})
     if(!cv){
       throw new NotFoundException("user not found")
     }
-    await this.userRepository.delete(id)
+    await this.cvRepository.delete(id)
     return id
   }
 }

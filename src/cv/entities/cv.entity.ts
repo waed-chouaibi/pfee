@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Candidat } from "src/candidat/entities/candidat.entity";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("Cv")
 export class Cv {
@@ -10,4 +11,10 @@ export class Cv {
     dateCreation:Date
     @Column()
     dateDerniereModification:Date
+
+    @OneToOne(()=>Candidat,candidat=>candidat.conversations,{
+        onDelete:'CASCADE'
+    })
+    @JoinColumn()
+    candidat:Candidat;
 }

@@ -8,15 +8,15 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UtilisateurService {
   constructor(
-    @InjectRepository(Utilisateur) private userRepository:Repository<Utilisateur>
+    @InjectRepository(Utilisateur) private utilisateurRepository:Repository<Utilisateur>
   ){}
   async create(createUtilisateurDto: CreateUtilisateurDto):Promise <Utilisateur> {
-    const newutilisateur =await this.userRepository.create(createUtilisateurDto)
-    return this.userRepository.save(newutilisateur)
+    const newutilisateur =await this.utilisateurRepository.create(createUtilisateurDto)
+    return this.utilisateurRepository.save(newutilisateur)
   }
 
   async findAll() : Promise <Utilisateur[]>{
-    const user=await this.userRepository.find()
+    const user=await this.utilisateurRepository.find()
     if(user.length==0){
       throw new NotFoundException("data not found")
     }
@@ -24,7 +24,7 @@ export class UtilisateurService {
   }
 
  async findOne(id: number):Promise <Utilisateur> {
-  const user=await this.userRepository.findOneBy({id})
+  const user=await this.utilisateurRepository.findOneBy({id})
   if(!user){
     throw new NotFoundException("user not found")
   }
@@ -32,19 +32,19 @@ export class UtilisateurService {
   }
 
   async update(id: number, updateUtilisateurDto: UpdateUtilisateurDto):Promise<Utilisateur> {
-    const updateuser=await this.userRepository.preload({...updateUtilisateurDto,id})
+    const updateuser=await this.utilisateurRepository.preload({...updateUtilisateurDto,id})
     if(!updateuser){
       throw new NotFoundException(`can not update a #${id} user`)
     }
-    return this.userRepository.save(updateuser)
+    return this.utilisateurRepository.save(updateuser)
   }
 
   async remove(id: number){
-    const user=await this.userRepository.findOneBy({id})
+    const user=await this.utilisateurRepository.findOneBy({id})
     if(!user){
       throw new NotFoundException("user not found")
     }
-    await this.userRepository.delete(id)
+    await this.utilisateurRepository.delete(id)
     return id
   }
 }

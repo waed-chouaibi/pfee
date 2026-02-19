@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Candidat } from "src/candidat/entities/candidat.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("Certification")
 export class Certification {
@@ -12,4 +13,11 @@ export class Certification {
     dateObtention:Date
     @Column()
     urlCertificat:string
+
+    @ManyToOne(()=>Candidat,candidat=>candidat.certification,{
+        onDelete:'CASCADE'
+    })
+    @JoinColumn()
+    candidat:Candidat;
+
 }

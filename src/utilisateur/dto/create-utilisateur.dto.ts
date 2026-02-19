@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsDate, IsEmail, IsNotEmpty, IsString, Min } from "class-validator"
+import { IsDate, IsDateString, IsEmail, IsNotEmpty, IsString, Min } from "class-validator"
 
 export class CreateUtilisateurDto {
     @IsString()
@@ -19,7 +19,6 @@ export class CreateUtilisateurDto {
 
     @IsString()
     telephone:string
-    @Type(()=>Date)
-    @IsDate()
+    @IsDateString()
     dateInscription:Date
 }

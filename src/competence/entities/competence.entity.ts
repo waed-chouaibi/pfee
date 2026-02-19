@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Candidat } from "src/candidat/entities/candidat.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum CompetenceType{
     DEBUTANT="DEBUTANT",
@@ -22,4 +23,10 @@ export class Competence {
     description:string
     @Column()
     categorie:string
+
+    @ManyToOne(()=>Candidat,candidat=>candidat.competence,{
+        onDelete:"CASCADE"
+    })
+    @JoinColumn()
+    candidat:Candidat;
 }

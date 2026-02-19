@@ -8,15 +8,15 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class CandidatService {
   constructor(
-    @InjectRepository(Candidat) private userRepository:Repository<Candidat>
+    @InjectRepository(Candidat) private candidatRepository:Repository<Candidat>
   ){}
   async create(createCandidatDto: CreateCandidatDto):Promise <Candidat> {
-    const newCandidat =await this.userRepository.create(createCandidatDto)
-    return this.userRepository.save(newCandidat)
+    const newCandidat =await this.candidatRepository.create(createCandidatDto)
+    return this.candidatRepository.save(newCandidat)
   }
 
   async findAll():Promise <Candidat[]> {
-     const candidat=await this.userRepository.find()
+     const candidat=await this.candidatRepository.find()
         if(candidat.length==0){
           throw new NotFoundException("data not found")
         }
@@ -24,7 +24,7 @@ export class CandidatService {
   }
 
   async findOne(id: number):Promise <Candidat> {
-    const candidat=await this.userRepository.findOneBy({id})
+    const candidat=await this.candidatRepository.findOneBy({id})
   if(!candidat){
     throw new NotFoundException("user not found")
   }
@@ -32,19 +32,19 @@ export class CandidatService {
   }
 
   async update(id: number, updateCandidatDto: UpdateCandidatDto):Promise <Candidat> {
-    const updateCandidat=await this.userRepository.preload({...updateCandidatDto,id})
+    const updateCandidat=await this.candidatRepository.preload({...updateCandidatDto,id})
     if(!updateCandidat){
       throw new NotFoundException(`can not update a #${id} user`)
     }
-    return this.userRepository.save(updateCandidat)
+    return this.candidatRepository.save(updateCandidat)
   }
 
   async remove(id: number) {
-    const candidat=await this.userRepository.findOneBy({id})
+    const candidat=await this.candidatRepository.findOneBy({id})
     if(!candidat){
       throw new NotFoundException("user not found")
     }
-    await this.userRepository.delete(id)
+    await this.candidatRepository.delete(id)
     return id
   }
 }

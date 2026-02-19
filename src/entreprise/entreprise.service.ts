@@ -8,15 +8,15 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class EntrepriseService {
   constructor(
-    @InjectRepository(Entreprise) private userRepository:Repository<Entreprise>
+    @InjectRepository(Entreprise) private entrepriseRepository:Repository<Entreprise>
   ){}
   async create(createEntrepriseDto: CreateEntrepriseDto):Promise<Entreprise> {
-    const newEntreprise=await this.userRepository.create({...createEntrepriseDto,role:"entreprise"})
-    return this.userRepository.save(newEntreprise)
+    const newEntreprise=await this.entrepriseRepository.create({...createEntrepriseDto,role:"entreprise"})
+    return this.entrepriseRepository.save(newEntreprise)
   }
 
   async findAll():Promise <Entreprise[]> {
-    const entreprise=await this.userRepository.find()
+    const entreprise=await this.entrepriseRepository.find()
     if(entreprise.length==0){
       throw new NotFoundException("Error : Not found")
     }
@@ -24,7 +24,7 @@ export class EntrepriseService {
   }
 
   async findOne(id: number):Promise <Entreprise> {
-    const entreprise=await this.userRepository.findOneBy({id})
+    const entreprise=await this.entrepriseRepository.findOneBy({id})
     if(!entreprise){
       throw new NotFoundException("Error: not found")
   }
@@ -32,19 +32,19 @@ export class EntrepriseService {
   }
 
   async update(id: number, updateEntrepriseDto: UpdateEntrepriseDto) {
-    const updateEntreprise=await this.userRepository.preload({...updateEntrepriseDto,id})
+    const updateEntreprise=await this.entrepriseRepository.preload({...updateEntrepriseDto,id})
   if(!updateEntreprise){
     throw new NotFoundException(`can not update a #${id} user`)
   }
-  return this.userRepository.save(updateEntreprise)
+  return this.entrepriseRepository.save(updateEntreprise)
   }
 
   async remove(id: number) {
-    const entreprise=await this.userRepository.findOneBy({id})
+    const entreprise=await this.entrepriseRepository.findOneBy({id})
   if(!entreprise){
     throw new NotFoundException("Error: not found")
   }
-  await this.userRepository.delete(id)
+  await this.entrepriseRepository.delete(id)
   return id
   }
 }

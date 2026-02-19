@@ -8,16 +8,16 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class OffreemploiService {
   constructor(
-    @InjectRepository(Offreemploi) private userRepository:Repository<Offreemploi>
+    @InjectRepository(Offreemploi) private offreemploiRepository:Repository<Offreemploi>
   ){}
   async create(createOffreemploiDto: CreateOffreemploiDto):Promise<Offreemploi> {
-    const newoffre=await this.userRepository.create(createOffreemploiDto)
-    return this.userRepository.save(newoffre)
+    const newoffre=await this.offreemploiRepository.create(createOffreemploiDto)
+    return this.offreemploiRepository.save(newoffre)
     
   }
 
   async findAll():Promise <Offreemploi[]> {
-    const offer=await this.userRepository.find()
+    const offer=await this.offreemploiRepository.find()
     if(offer.length==0){
       throw new NotFoundException("data not found")
     }
@@ -25,7 +25,7 @@ export class OffreemploiService {
   }
 
   async findOne(id: number):Promise <Offreemploi> {
-    const offer=await this.userRepository.findOneBy({id})
+    const offer=await this.offreemploiRepository.findOneBy({id})
     if (!offer){
       throw new NotFoundException("error!")
     }
@@ -33,20 +33,20 @@ export class OffreemploiService {
   }
 
   async update(id: number, updateOffreemploiDto: UpdateOffreemploiDto):Promise <Offreemploi> {
-    const offer=await this.userRepository.preload({...updateOffreemploiDto,id})
+    const offer=await this.offreemploiRepository.preload({...updateOffreemploiDto,id})
     if(!offer){
       throw new NotFoundException(`can not update a #${id} user`)
     }
-  return this.userRepository.save(offer)
+  return this.offreemploiRepository.save(offer)
   }
   
 
   async remove(id: number) {
-    const offer=await this.userRepository.findOneBy({id})
+    const offer=await this.offreemploiRepository.findOneBy({id})
   if(!offer){
     throw new NotFoundException("user not found")
   }
-  await this.userRepository.delete(id)
+  await this.offreemploiRepository.delete(id)
   return id
   
   }

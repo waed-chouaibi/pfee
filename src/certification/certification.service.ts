@@ -8,15 +8,15 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class CertificationService {
   constructor(
-    @InjectRepository(Certification) private userRepository:Repository<Certification>
+    @InjectRepository(Certification) private certificationRepository:Repository<Certification>
   ){}
   async create(createCertificationDto: CreateCertificationDto):Promise <Certification> {
-    const newCertification =await this.userRepository.create(createCertificationDto)
-    return this.userRepository.save(newCertification)
+    const newCertification =await this.certificationRepository.create(createCertificationDto)
+    return this.certificationRepository.save(newCertification)
   }
 
   async findAll():Promise <Certification[]> {
-     const certification=await this.userRepository.find()
+     const certification=await this.certificationRepository.find()
         if(certification.length==0){
           throw new NotFoundException("data not found")
         }
@@ -24,7 +24,7 @@ export class CertificationService {
   }
 
   async findOne(id: number):Promise<Certification> {
-    const certification=await this.userRepository.findOneBy({id})
+    const certification=await this.certificationRepository.findOneBy({id})
   if(!certification){
     throw new NotFoundException("user not found")
   }
@@ -32,19 +32,19 @@ export class CertificationService {
   }
 
   async update(id: number, updateCertificationDto: UpdateCertificationDto):Promise<Certification> {
-    const updateCertification=await this.userRepository.preload({...updateCertificationDto,id})
+    const updateCertification=await this.certificationRepository.preload({...updateCertificationDto,id})
     if(!updateCertification){
       throw new NotFoundException(`can not update a #${id}`)
     }
-    return this.userRepository.save(updateCertification)
+    return this.certificationRepository.save(updateCertification)
   }
 
   async remove(id: number) {
-    const certification=await this.userRepository.findOneBy({id})
+    const certification=await this.certificationRepository.findOneBy({id})
     if(!certification){
       throw new NotFoundException("not found")
     }
-    await this.userRepository.delete(id)
+    await this.certificationRepository.delete(id)
     return id
   }
 }

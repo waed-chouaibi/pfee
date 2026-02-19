@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseInterceptors, UploadedFile, UploadedFiles } from '@nestjs/common';
 import { CandidatService } from './candidat.service';
 import { CreateCandidatDto } from './dto/create-candidat.dto';
 import { UpdateCandidatDto } from './dto/update-candidat.dto';
@@ -66,8 +66,19 @@ export class CandidatController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() updateCandidatDto: UpdateCandidatDto,@Res()response) {
+  @UseInterceptors(FileInterceptor("imageURL", {
+    storage:diskStorage({
+      destination: './stockage',
+      filename: (req, file, cb) => {
+        cb(null , `${new Date().getTime()}${extname(file.originalname)}`)}
+      })
+  }))
+  async update(@Param('id') id: number, @Body() updateCandidatDto: UpdateCandidatDto,@Res()response,@UploadedFiles()imageURL) {
     try{
+      const newImage=imageURL? imageURL.filename:null
+      if(newImage){
+        updateCandidatDto.imageURL=newImage
+      }
       const updateCandidat=await this.candidatService.update(id ,updateCandidatDto)
       return response.status(HttpStatus.OK).json({
         message:"candidat update",updateCandidat

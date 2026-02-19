@@ -8,15 +8,15 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class MessageService {
   constructor(
-    @InjectRepository(Message) private userRepository:Repository<Message>
+    @InjectRepository(Message) private messageRepository:Repository<Message>
   ){}
   async create(createMessageDto: CreateMessageDto):Promise <Message> {
-    const newMessage =await this.userRepository.create(createMessageDto)
-    return this.userRepository.save(newMessage)
+    const newMessage =await this.messageRepository.create(createMessageDto)
+    return this.messageRepository.save(newMessage)
   }
 
   async findAll():Promise<Message[]> {
-    const message=await this.userRepository.find()
+    const message=await this.messageRepository.find()
         if(message.length==0){
           throw new NotFoundException("data not found")
         }
@@ -24,7 +24,7 @@ export class MessageService {
   }
 
   async findOne(id: number):Promise <Message> {
-    const message=await this.userRepository.findOneBy({id})
+    const message=await this.messageRepository.findOneBy({id})
     if(!message){
       throw new NotFoundException("user not found")
     }
@@ -32,19 +32,19 @@ export class MessageService {
   }
 
   async update(id: number, updateMessageDto: UpdateMessageDto):Promise <Message> {
-   const updateMessage=await this.userRepository.preload({...updateMessageDto,id})
+   const updateMessage=await this.messageRepository.preload({...updateMessageDto,id})
     if(!updateMessage){
       throw new NotFoundException(`can not update a #${id} user`)
     }
-    return this.userRepository.save(updateMessage)
+    return this.messageRepository.save(updateMessage)
   }
 
   async remove(id: number) {
-    const message=await this.userRepository.findOneBy({id})
+    const message=await this.messageRepository.findOneBy({id})
     if(!message){
       throw new NotFoundException("user not found")
     }
-    await this.userRepository.delete(id)
+    await this.messageRepository.delete(id)
     return id
   }
 }

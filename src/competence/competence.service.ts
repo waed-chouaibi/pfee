@@ -8,15 +8,15 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class CompetenceService {
   constructor(
-    @InjectRepository(Competence) private userRepository:Repository<Competence>
+    @InjectRepository(Competence) private competenceRepository:Repository<Competence>
   ){}
   async create(createCompetenceDto: CreateCompetenceDto):Promise <Competence> {
-    const competence =await this.userRepository.create(createCompetenceDto)
-    return this.userRepository.save(competence)
+    const competence =await this.competenceRepository.create(createCompetenceDto)
+    return this.competenceRepository.save(competence)
   }
 
   async findAll():Promise <Competence[]> {
-    const competence=await this.userRepository.find()
+    const competence=await this.competenceRepository.find()
         if(competence.length==0){
           throw new NotFoundException("data not found")
         }
@@ -24,7 +24,7 @@ export class CompetenceService {
   }
 
   async findOne(id: number):Promise <Competence> {
-    const competence=await this.userRepository.findOneBy({id})
+    const competence=await this.competenceRepository.findOneBy({id})
      if(!competence){
       throw new NotFoundException("user not found")
     }
@@ -32,19 +32,19 @@ export class CompetenceService {
   }
 
   async update(id: number, updateCompetenceDto: UpdateCompetenceDto):Promise <Competence> {
-     const updateCompetence=await this.userRepository.preload({...updateCompetenceDto,id})
+     const updateCompetence=await this.competenceRepository.preload({...updateCompetenceDto,id})
      if(!updateCompetence){
       throw new NotFoundException(`can not update a #${id} competence`)
     }
-    return this.userRepository.save(updateCompetence)
+    return this.competenceRepository.save(updateCompetence)
   }
 
   async remove(id: number) {
-    const competence=await this.userRepository.findOneBy({id})
+    const competence=await this.competenceRepository.findOneBy({id})
     if(!competence){
       throw new NotFoundException(" not found")
     }
-    await this.userRepository.delete(id)
+    await this.competenceRepository.delete(id)
     return id
   }
 }
